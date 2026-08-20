@@ -1,0 +1,68 @@
+BUILD WINDOWS 7 32-BIT FROM MAC MINI USING GITHUB ACTIONS
+===========================================================
+
+Bạn KHÔNG cần máy Windows để build.
+
+Yêu cầu:
+- Có tài khoản GitHub.
+- Mac mini có trình duyệt + internet.
+
+CÁCH LÀM
+========
+
+1) Vào github.com -> New repository.
+   Ví dụ tên:
+   AudioCheckPC
+
+2) Giải nén folder này trên Mac.
+
+3) Upload TOÀN BỘ nội dung folder này lên repository.
+   Phải có:
+   main.py
+   ui.py
+   tcp_server.py
+   protocol_parser.py
+   config.py
+   .github/workflows/build_win7_32bit.yml
+
+   QUAN TRỌNG:
+   Folder .github là folder ẩn trên macOS.
+   Nếu dùng Finder, nhấn:
+   Command + Shift + .
+   để hiện file/folder ẩn.
+
+4) Sau khi upload xong:
+   GitHub -> tab Actions
+
+5) Chọn:
+   Build Windows 7 32-bit EXE
+
+6) Nhấn:
+   Run workflow
+   -> Run workflow
+
+7) Chờ job xanh (success).
+
+8) Mở workflow run vừa xong.
+   Kéo xuống phần Artifacts.
+
+9) Tải:
+   AudioCheckPC-Windows7-32bit
+
+10) Giải nén artifact.
+    Bên trong có:
+    AudioCheckPC.exe
+
+Workflow kiểm tra bắt buộc:
+- Python 3.8.10
+- architecture x86 / 32-bit
+- PyInstaller 5.13.2
+
+PC app config:
+- Listen: 0.0.0.0:5001
+- Mac mini connect tới PC: 192.168.1.10:5001
+
+LƯU Ý WINDOWS 7
+===============
+File được build nhắm tới Python/PyInstaller cũ phù hợp Windows 7 hơn.
+PC thật nên là Windows 7 SP1 32-bit và có Universal C Runtime/KB2999226 nếu máy thiếu runtime.

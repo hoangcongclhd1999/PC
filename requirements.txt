@@ -1,0 +1,5 @@
+# No runtime third-party dependency.
+# Tkinter, socket, threading, queue are included with normal Python installs.
+#
+# Build only:
+# python -m pip install pyinstaller
