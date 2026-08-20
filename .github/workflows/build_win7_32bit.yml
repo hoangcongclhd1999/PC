@@ -1,0 +1,41 @@
+name: Build Windows 7 32-bit EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-win7-x86:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.8.10 32-bit
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8.10"
+          architecture: "x86"
+
+      - name: Check Python architecture
+        shell: cmd
+        run: |
+          python --version
+          python -c "import struct,sys; print('Architecture:', struct.calcsize('P')*8, 'bit'); sys.exit(0 if struct.calcsize('P')*8 == 32 else 1)"
+
+      - name: Install PyInstaller
+        shell: cmd
+        run: |
+          python -m pip install "pip==24.3.1"
+          python -m pip install "pyinstaller==5.13.2"
+
+      - name: Build AudioCheckPC
+        shell: cmd
+        run: |
+          python -m PyInstaller --clean --noconfirm --onefile --windowed --name AudioCheckPC main.py
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: AudioCheckPC-Windows7-32bit
+          path: dist/AudioCheckPC.exe
